@@ -8,7 +8,7 @@ config_path="/var/run/shm/dnsmasq.d"
 
 if [ ! -d $config_path ]; then
     echo "Creating directory for config files"
-    mkdir -p -m 644 $config_path
+    mkdir -p -m 755 $config_path
 fi
 
 ip_address="$(hostname -I | awk '{ print $1 }')"
@@ -66,7 +66,8 @@ iptables -A INPUT -p tcp -i eth0 --dport 80 -j REJECT
 iptables -A INPUT -p tcp -i eth0 --dport 443 -j REJECT
 
 echo "Configuring permissions"
-chmod -R 644 $config_path
+chmod 644 $config_path/*
+chmod 755 $config_path
 chown -R root $config_path
 
 echo "Making sure that dnsmasq is started"
